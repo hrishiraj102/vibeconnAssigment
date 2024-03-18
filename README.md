@@ -11,6 +11,7 @@ Save Data: The application provides functionality to save the employee data to a
 Load Data: Users can load previously saved employee data from the file into the system.
 Input Validation: Input validation is implemented to ensure that user inputs are of the correct type and within acceptable ranges.
 Search by id/name/position: User can search by id, name, or position. For position all the match employee data will be display. 
+To Run - Install JDK and then run in any IDE or directly using terminal.
 
 <img width="518" alt="image" src="https://github.com/hrishiraj102/vibeconproAssigment/assets/72655749/f010512f-0772-4f7d-89cf-7d12e4130659">
 
