@@ -85,7 +85,7 @@ class EmployeeManagementSystem {
                 return;
             }
         }
-        System.out.println("Employee with ID " + id + " do not Exit.");
+        System.out.println("Employee with ID " + id + " does not Exit.");
     }
 
     public void deleteEmployee(int id) {
@@ -106,12 +106,52 @@ class EmployeeManagementSystem {
         }
     }
 
+    // Search by name function
+    public void searchDataByName(String name) {
+
+        for (Employee employee : employees) {
+            if (employee.getName().equals(name)) {
+                System.out.println(employee);
+                return;
+            }
+        }
+        System.out.println("Employee with Name " + name + " does not Exit.");
+    }
+
+    // Search by id function
+    public void searchDataById(int id) {
+
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
+                System.out.println(employee);
+                return;
+            }
+        }
+        System.out.println("Employee with Id " + id + " does not Exit.");
+    }
+
+    // Search by position
+    public void searchDataByPosition(String position) {
+        boolean absent = true; // handled multiple number of employe with same position
+        for (Employee employee : employees) {
+            if (employee.getPosition().equals(position)) {
+                System.out.println(employee);
+                absent = false;
+            }
+        }
+        if (absent) {
+            System.out.println("Employee with position " + position + " do not Exit.");
+
+        }
+
+    }
+
     @SuppressWarnings("unchecked") // I am ignoring any warning when loading the data
     public void loadData() {
         try {
             FileInputStream fileIn = new FileInputStream("employees.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            employees = (ArrayList<Employee>) in.readObject(); //getting back the data to object employees
+            employees = (ArrayList<Employee>) in.readObject(); // getting back the data to object employees
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
@@ -127,16 +167,31 @@ class EmployeeManagementSystem {
         System.out.println("4. Delete Employee");
         System.out.println("5. Save Data");
         System.out.println("6. Load Data");
-        System.out.println("7. Exit");
+        System.out.println("7. Search By Id");
+        System.out.println("8. Search By Name");
+        System.out.println("9. Search By Position");
+        System.out.println("10. Exit");
     }
 
     public void run() {
         int option;
         do {
             displayMenu();
-            System.out.print("Enter your choice: ");
-            option = sc.nextInt();
-            sc.nextLine(); 
+            
+            while (true) {
+                try {
+                    System.out.print("Enter your choice: ");
+                    option = sc.nextInt();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Enter integer value:");
+                    sc.nextLine();
+
+                }
+
+            }
+
+            sc.nextLine();
 
             switch (option) {
                 case 1:
@@ -155,7 +210,7 @@ class EmployeeManagementSystem {
                             sc.nextLine();
                         }
                     }
-                    sc.nextLine(); // Consume newline 
+                    sc.nextLine(); // Consume newline
                     System.out.print("Enter employee name: ");
                     String name = sc.nextLine();
                     System.out.print("Enter employee position: ");
@@ -229,13 +284,48 @@ class EmployeeManagementSystem {
                     System.out.println("Data loaded successfully.");
                     break;
                 case 7:
+                    int searchid;
+
+                    // Handling Inputmismatch if user type non int number
+                    while (true) {
+                        try {
+
+                            System.out.print("Enter employee ID: ");
+                            searchid = sc.nextInt();
+                            searchDataById(searchid);
+                            break; // If no error break the loop
+                        } catch (InputMismatchException e) {
+                            // TODO: handle exception
+                            System.out.println("Invalid input. Please enter a valid integer for employee ID.");
+                            sc.nextLine();
+                        }
+                    }
+                    break;
+                case 8:
+                    String searchName;
+
+                    System.out.print("Enter employee Name: ");
+                    searchName = sc.nextLine();
+                    searchDataByName(searchName);
+
+                    break;
+
+                case 9:
+                    String searchPos;
+
+                    System.out.print("Enter employee Position: ");
+                    searchPos = sc.nextLine();
+                    searchDataByPosition(searchPos);
+                    ;
+                    break;
+                case 10:
                     saveData();
                     System.out.println("Exiting...");
                     break;
                 default:
                     System.out.println("Invalid choice.");
             }
-        } while (option != 7);
+        } while (option != 10);
 
     }
 
